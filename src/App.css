@@ -1,0 +1,97 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between; /* Buttons und Download-Button am Anfang und Ende der Toolbar */
+  align-items: center;
+  background-color: #333; /* dunkler Hintergrund wie im Screenshot */
+  padding: 8px;
+}
+
+.button-container {
+  display: flex;
+  align-items: center; /* Buttons vertikal zentrieren */
+}
+
+.toolbar button {
+  background: none;
+  color: white; /* weiße Icon-Farbe */
+  border: none;
+  margin-right: 5px; /* geringer Abstand zwischen den Buttons */
+  cursor: pointer;
+}
+
+.toolbar button:hover {
+  background-color: #555; /* leichter Hover-Effekt */
+}
+.toolbar button {
+  background: none;
+  color: white; /* weiße Icon-Farbe */
+  border: none;
+  margin-right: 5px; /* geringer Abstand zwischen den Buttons */
+  cursor: pointer;
+}
+
+.toolbar button:hover {
+  background-color: #555; /* leichter Hover-Effekt */
+}
+.editor-preview-container {
+  display: flex;
+  height: calc(100% - 40px); /* Passt die Höhe an die Toolbar-Höhe an */
+}
+
+.editor, .preview {
+  flex: 1;
+  height: auto;
+  overflow-y: auto;
+}
+
+.editor {
+  border-right: 1px solid #ccc;
+}
+
+.preview {
+  padding-left: 20px; /* Sorgt für etwas Abstand zwischen Editor und Vorschau */
+}
+
+/* App.css */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Hintergrund mit leichter Transparenz */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal-content {
+  background-color: #fff;
+  /* border-radius: 8px; */
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end; /* Buttons am rechten Rand ausrichten */
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  margin-left: 10px;
+}
+
+.modal-buttons button:first-child {
+  margin-left: 0; /* Kein Abstand für das erste Button-Element */
+}
