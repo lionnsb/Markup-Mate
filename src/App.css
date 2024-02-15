@@ -3,6 +3,12 @@
   flex-direction: column;
   height: 100vh;
 }
+body {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #333; /* Dunkelgrau für den Haupttext */
+  background-color: #eee; /* Leichter Hintergrund für die gesamte Seite */
+}
 
 .toolbar {
   display: flex;
@@ -94,4 +100,29 @@
 
 .modal-buttons button:first-child {
   margin-left: 0; /* Kein Abstand für das erste Button-Element */
+}
+.app-footer {
+  background-color: #0078D7; /* Blaue Farbe, wie im Screenshot */
+  color: white;
+  text-align: left; /* Text links ausgerichtet */
+  padding: 10px 20px; /* Zusätzliches seitliches Padding, um sicherzustellen, dass der Text nicht abgeschnitten wird */
+  position: fixed;
+  bottom: 0;
+  height: 15px;
+  width: 100%;
+  font-size: 1em; /* Angepasste Schriftgröße, damit sie besser lesbar ist */
+  box-shadow: 0 -1px 5px rgba(0,0,0,0.2); /* Leichter Schatten, um den Text besser abzuheben */
+  display: flex;
+  justify-content: space-between; /* Sorgt für Abstand zwischen den Textblöcken */
+  align-items: center;
+}
+
+/* Zusätzliche Klassen für die spezifischen Inhalte könnten notwendig sein, um sie zu positionieren. */
+.footer-right {
+  margin-right: 30px; /* Füge rechts einen Margin hinzu, um sicherzustellen, dass der Text sichtbar ist */
+}
+
+/* Optional: Füge eine Mindestbreite hinzu, damit der Text nicht zusammengedrückt wird */
+.footer-left, .footer-right {
+  min-width: 100px;
 }

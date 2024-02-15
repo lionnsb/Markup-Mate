@@ -1,16 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect  } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import './App.css';
 import { FaBold, FaItalic, FaList, FaImage, FaLink, FaStrikethrough, FaQuoteRight, FaCode, FaListOl, FaMinus, FaRegFileCode, FaDownload } from 'react-icons/fa';
 import { Modal, Button, TextField } from '@material-ui/core';
+import 'github-markdown-css';
 
 function App() {
   const [markdown, setMarkdown] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
   const [fileName, setFileName] = useState('Untitled');
-
+  const [renderedMarkdown, setRenderedMarkdown] = useState('');
+  const markdownRef = useRef(null);
+  
   const handleChange = (e) => {
     setMarkdown(e.target.value);
   };
@@ -32,9 +35,14 @@ function App() {
   };
 
   const insertTextAtCursor = (text) => {
-    const start = markdown.substring(0, markdownRef.current.selectionStart);
-    const end = markdown.substring(markdownRef.current.selectionEnd);
+    const textarea = markdownRef.current;
+    const start = markdown.substring(0, textarea.selectionStart);
+    const end = markdown.substring(textarea.selectionEnd);
     setMarkdown(start + text + end);
+    
+    // Setzt den Fokus zurück auf das Textfeld und positioniert den Cursor hinter dem eingefügten Text
+    textarea.focus();
+    textarea.setSelectionRange(start.length + text.length, start.length + text.length);
   };
 
   const handleDownloadMarkdown = () => {
@@ -46,7 +54,44 @@ function App() {
     element.click();
   };
 
-  const markdownRef = useRef(null);
+  const [footerData, setFooterData] = useState({
+    markdownBytes: 0,
+    markdownWords: 0,
+    markdownLines: 0,
+    htmlCharacters: 0,
+    htmlWords: 0,
+    htmlParagraphs: 0
+  });
+
+  const calculateFooterData = (markdownText, renderedText) => {
+    const encoder = new TextEncoder();
+    const markdownBytes = encoder.encode(markdownText).length;
+    const markdownWords = markdownText ? (markdownText.match(/\w+/g) || []).length : 0;
+    const markdownLines = markdownText ? markdownText.split('\n').length : 0;
+
+    // Jetzt, wo wir den gerenderten Text haben, können wir die Berechnungen durchführen
+    const htmlCharacters = renderedText.length;
+    const htmlWords = renderedText ? (renderedText.match(/\w+/g) || []).length : 0;
+    const htmlParagraphs = markdownText ? (markdownText.match(/\n\n/g) || []).length : 0; // Einfache Annäherung durch Zählen doppelter Newlines
+
+    setFooterData({
+      markdownBytes,
+      markdownWords,
+      markdownLines,
+      htmlCharacters,
+      htmlWords,
+      htmlParagraphs
+    });
+  };
+
+  useEffect(() => {
+    setRenderedMarkdown(document.querySelector('.preview').innerText);
+    // Hier rufen wir calculateFooterData auf, nachdem der State aktualisiert wurde
+  }, [markdown]);
+
+  useEffect(() => {
+    calculateFooterData(markdown, renderedMarkdown);
+  }, [renderedMarkdown]);
 
   return (
     <div className="App">
@@ -109,10 +154,18 @@ function App() {
           onChange={handleChange}
           placeholder="Gib hier deinen Markdown-Text ein..."
         />
-        <div className="preview markdown-body">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} children={markdown} />
+     <div className="preview markdown-body">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
         </div>
       </div>
+        <footer className="app-footer">
+          <div className="footer-left">
+            <p>Markdown: {footerData.markdownBytes} bytes, {footerData.markdownWords} words, {footerData.markdownLines} lines</p>
+          </div>
+          <div className="footer-right">
+            <p>HTML: {footerData.htmlCharacters} characters, {footerData.htmlWords} words, {footerData.htmlParagraphs} paragraphs</p>
+          </div>
+        </footer>
     </div>
   );
 }
